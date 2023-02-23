@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package demo;
+
+option go_package = "../demo";
+
+
+message HelloReq {
+    string target = 1;
+}
+
+message CommonRsp {
+    int32 code = 1;
+    string message = 2;
+    bytes body = 3;
+}
+
+message HelloRsp {
+    string result = 3;
+}
+
+service rpcDemo {
+    rpc Hello(HelloReq) returns(HelloRsp);
+}
