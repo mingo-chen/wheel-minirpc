@@ -6,16 +6,12 @@ import (
 	"fmt"
 
 	"github.com/mingo-chen/wheel-minirpc/demo"
+	_ "github.com/mingo-chen/wheel-minirpc/demo/adapter"
 	"github.com/mingo-chen/wheel-minirpc/demo/stub"
-	"github.com/mingo-chen/wheel-minirpc/framework"
-	"github.com/mingo-chen/wheel-minirpc/framework/ext"
-	"github.com/mingo-chen/wheel-minirpc/framework/transport"
+	"github.com/mingo-chen/wheel-minirpc/transport"
 )
 
 func main() {
-	framework.RegistCoder("minirpc", ext.MiniRpcReqCoder{}, ext.MiniRpcRspCoder{})
-	framework.RegistFramer("minirpc", ext.MiniRpcFramer{})
-
 	ctx := context.TODO()
 	stub.RegsiterImpl(ctx, rpcDemoImpl{})
 

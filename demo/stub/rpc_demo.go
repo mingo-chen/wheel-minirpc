@@ -4,13 +4,13 @@ import (
 	"context"
 	"net"
 
+	"github.com/mingo-chen/wheel-minirpc/core"
 	"github.com/mingo-chen/wheel-minirpc/demo"
-	"github.com/mingo-chen/wheel-minirpc/framework"
-	"github.com/mingo-chen/wheel-minirpc/framework/transport"
+	"github.com/mingo-chen/wheel-minirpc/transport"
 	"google.golang.org/protobuf/proto"
 )
 
-// TODO 后续通过code generate技术自动生成
+// RegsiterImpl 后续通过code generate技术自动生成
 func RegsiterImpl(ctx context.Context, impl rpcDemo) {
 	transport.RegistRpc("Hello", func(ctx context.Context, req []byte) ([]byte, error) {
 		var helleReq demo.HelloReq
@@ -36,9 +36,9 @@ type RpcClient struct {
 }
 
 func (cli RpcClient) Invoke(ctx context.Context, req proto.Message, rsp proto.Message) (err error) {
-	framer := framework.GetFramer("minirpc")            // TODO: 读取配置
-	reqCoder, rspCoder := framework.GetCoder("minirpc") // TODO: 读取配置
-	rpcCtx := framework.RpcContext(ctx)
+	framer := core.GetFramer("minirpc")            // TODO: 读取配置
+	reqCoder, rspCoder := core.GetCoder("minirpc") // TODO: 读取配置
+	rpcCtx := core.RpcContext(ctx)
 
 	// 生成reqId
 
@@ -72,9 +72,9 @@ type RpcDemoStub struct {
 
 func (stub RpcDemoStub) Hello(ctx context.Context, req *demo.HelloReq) (*demo.HelloRsp, error) {
 	// 设置上下文信息
-	rpcCtx := framework.NewDefaultRpcCtx()
+	rpcCtx := core.NewDefaultRpcCtx()
 	rpcCtx.WithName("Hello")
-	ctx = framework.WithCtx(ctx, rpcCtx)
+	ctx = core.WithCtx(ctx, rpcCtx)
 
 	var rsp demo.HelloRsp
 	if err := stub.Client.Invoke(ctx, req, &rsp); err != nil {
