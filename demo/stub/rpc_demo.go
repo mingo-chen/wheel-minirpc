@@ -6,6 +6,7 @@ import (
 
 	"github.com/mingo-chen/wheel-minirpc/core"
 	"github.com/mingo-chen/wheel-minirpc/demo"
+	"github.com/mingo-chen/wheel-minirpc/ext"
 	"github.com/mingo-chen/wheel-minirpc/transport"
 	"google.golang.org/protobuf/proto"
 )
@@ -36,8 +37,8 @@ type RpcClient struct {
 }
 
 func (cli RpcClient) Invoke(ctx context.Context, req proto.Message, rsp proto.Message) (err error) {
-	framer := core.GetFramer("minirpc")            // TODO: 读取配置
-	reqCoder, rspCoder := core.GetCoder("minirpc") // TODO: 读取配置
+	framer := ext.GetFramer("minirpc")            // TODO: 读取配置
+	reqCoder, rspCoder := ext.GetCoder("minirpc") // TODO: 读取配置
 	rpcCtx := core.RpcContext(ctx)
 
 	// 生成reqId

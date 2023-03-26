@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"github.com/mingo-chen/wheel-minirpc/core"
+	"github.com/mingo-chen/wheel-minirpc/ext"
 )
 
 func TcpServer(ctx context.Context, port int) error {
@@ -25,7 +26,7 @@ func TcpServer(ctx context.Context, port int) error {
 }
 
 func handConn(ctx context.Context, conn net.Conn) {
-	framer := core.GetFramer("minirpc") // TODO: 读取配置
+	framer := ext.GetFramer("minirpc") // TODO: 读取配置
 	req, err := framer.ReadFrame(conn)
 	if err != nil {
 		fmt.Printf("ReadFrame err:%+v \n", err)
@@ -44,7 +45,7 @@ func handConn(ctx context.Context, conn net.Conn) {
 }
 
 func handRpc(ctx context.Context, req []byte) (rsp []byte, err error) {
-	reqCoder, rspCoder := core.GetCoder("minirpc") // TODO: 读取配置
+	reqCoder, rspCoder := ext.GetCoder("minirpc") // TODO: 读取配置
 	rpcCtx := core.RpcContext(ctx)
 	request, err := reqCoder.Decode(rpcCtx, req)
 	if err != nil {

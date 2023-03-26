@@ -74,16 +74,18 @@ type ClientConfig struct {
 }
 
 // LoadAppConf 加载应用配置
-func LoadAppConf(path string) {
+func LoadAppConf(path string) error {
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Printf("read yaml err:%+v", err)
-		return
+		return err
 	}
 
 	if yaml.Unmarshal(content, &App); err != nil {
 		fmt.Printf("Unmarshal err:%+v", err)
+		return err
 	}
+	return nil
 }
 
 // LoadComponentConf 加载插件配置

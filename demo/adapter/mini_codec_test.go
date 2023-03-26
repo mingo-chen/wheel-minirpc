@@ -5,11 +5,12 @@ import (
 
 	"github.com/mingo-chen/wheel-minirpc/core"
 	miniproto "github.com/mingo-chen/wheel-minirpc/demo/adapter/proto"
+	"github.com/mingo-chen/wheel-minirpc/ext"
 	"google.golang.org/protobuf/proto"
 )
 
 func TestMiniRpcReqCoder_Encode(t *testing.T) {
-	var coder core.Coder = MiniRpcReqCoder{}
+	var coder ext.Coder = MiniRpcReqCoder{}
 
 	req := miniproto.RpcReq{
 		Head: &miniproto.ReqHead{

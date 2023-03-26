@@ -3,13 +3,28 @@ package filter
 import (
 	"context"
 	"fmt"
+
+	"github.com/mingo-chen/wheel-minirpc/core"
 )
 
-// HandlerFunc 请求处理接口
-type HandlerFunc func(ctx context.Context, req interface{}) (rsp interface{}, err error)
-
 // Filter 过滤器
-type Filter func(ctx context.Context, req interface{}, next HandlerFunc) (rsp interface{}, err error)
+type Filter func(ctx context.Context, req interface{}, next core.HandlerFunc) (rsp interface{}, err error)
+
+// FilterChain Filter+HandlerFunc 组成的处理链
+var FilterChain = func(filters []Filter, baseHandler core.HandlerFunc) core.HandlerFunc {
+	return func(ctx context.Context, req interface{}) (rsp interface{}, err error) {
+		handler := baseHandler // 从最底的业务实现处理器开始，层层包装
+		for i := len(filters) - 1; i >= 0; i-- {
+			curHandler, curFilter := handler, filters[i]
+			handler = func(ctx context.Context, req interface{}) (rsp interface{}, err error) {
+				return curFilter(ctx, req, curHandler)
+			}
+		}
+
+		rsp, err = handler(ctx, req) // 最终的处理器
+		return
+	}
+}
 
 var filterHub = map[string]Filter{}
 

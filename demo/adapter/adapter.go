@@ -1,8 +1,10 @@
 package adapter
 
-import "github.com/mingo-chen/wheel-minirpc/core"
+import (
+	"github.com/mingo-chen/wheel-minirpc/ext"
+)
 
 func init() {
-	core.RegistCoder("minirpc", MiniRpcReqCoder{}, MiniRpcRspCoder{})
-	core.RegistFramer("minirpc", MiniRpcFramer{})
+	ext.RegistCoder("minirpc", MiniRpcReqCoder{}, MiniRpcRspCoder{})
+	ext.RegistFramer("minirpc", MiniRpcFramer{})
 }

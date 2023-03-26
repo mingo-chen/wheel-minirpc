@@ -5,19 +5,22 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/mingo-chen/wheel-minirpc/config"
 	"github.com/mingo-chen/wheel-minirpc/demo"
 	_ "github.com/mingo-chen/wheel-minirpc/demo/adapter"
 	"github.com/mingo-chen/wheel-minirpc/demo/stub"
-	"github.com/mingo-chen/wheel-minirpc/transport"
+	"github.com/mingo-chen/wheel-minirpc/server"
 )
 
 func main() {
 	ctx := context.TODO()
+	if err := config.LoadAppConf("./server.yaml"); err != nil {
+		panic(fmt.Errorf("load config err:%+v", err))
+	}
+
 	stub.RegsiterImpl(ctx, rpcDemoImpl{})
 
-	if err := transport.TcpServer(ctx, 8080); err != nil {
-		panic(fmt.Errorf("tcp serve err:%+v", err))
-	}
+	server.Startup(ctx, config.App) // 阻塞执行
 }
 
 type rpcDemoImpl struct{}
