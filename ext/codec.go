@@ -13,15 +13,18 @@ type Coder interface {
 	Decode(ctx core.RpcCtx, pkg []byte) (body []byte, err error)
 }
 
+var cliCoderHub = map[string]Coder{}
+var svrCoderHub = map[string]Coder{}
+
+// GetCoder 获取编解码器
 func GetCoder(protoName string) (Coder, Coder) {
-	cli := coderHub[protoName+"_client"]
-	svr := coderHub[protoName+"_server"]
+	cli := cliCoderHub[protoName]
+	svr := svrCoderHub[protoName]
 	return cli, svr
 }
 
-var coderHub = map[string]Coder{}
-
+// RegistCoder 注册编解码器
 func RegistCoder(protoName string, cli, svr Coder) {
-	coderHub[protoName+"_client"] = cli
-	coderHub[protoName+"_server"] = svr
+	cliCoderHub[protoName] = cli
+	svrCoderHub[protoName] = svr
 }

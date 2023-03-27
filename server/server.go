@@ -12,7 +12,7 @@ import (
 
 // Startup 服务启动
 func Startup(ctx context.Context, conf config.AppConfig) {
-	// 启动Components
+	// 启动Plugins
 
 	// 启动Service
 	for _, svr := range conf.Server.Service {

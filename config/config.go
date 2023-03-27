@@ -12,10 +12,10 @@ var App AppConfig
 
 // 整个应用配置对象
 type AppConfig struct {
-	Global    GlobalConfig         `yaml:"global"`
-	Server    ServerConfig         `yaml:"server"`
-	Client    ClientConfig         `yaml:"client"`
-	Component map[string]yaml.Node `yaml:"component"`
+	Global  GlobalConfig         `yaml:"global"`
+	Server  ServerConfig         `yaml:"server"`
+	Client  ClientConfig         `yaml:"client"`
+	Plugins map[string]yaml.Node `yaml:"plugin"`
 }
 
 // 整个App共享的配置
@@ -88,11 +88,11 @@ func LoadAppConf(path string) error {
 	return nil
 }
 
-// LoadComponentConf 加载插件配置
-func LoadComponentConf(name string, holder interface{}) error {
-	cfg, ok := App.Component[name]
+// LoadPluginConf 加载插件配置
+func LoadPluginConf(name string, holder interface{}) error {
+	cfg, ok := App.Plugins[name]
 	if !ok {
-		return fmt.Errorf("component config not exist")
+		return fmt.Errorf("plugin config not exist")
 	}
 
 	return cfg.Decode(holder)

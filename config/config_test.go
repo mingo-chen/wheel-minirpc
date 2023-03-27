@@ -8,7 +8,7 @@ func Test_load(t *testing.T) {
 	LoadAppConf("./rpc.yaml")
 	t.Logf("app config:%+v", App)
 
-	for k1, c := range App.Component {
+	for k1, c := range App.Plugins {
 		t.Logf("k1:%+v, %+v", k1, c)
 	}
 
@@ -21,7 +21,7 @@ func Test_load(t *testing.T) {
 	}
 
 	var log logger
-	LoadComponentConf("logger", &log)
+	LoadPluginConf("logger", &log)
 	// }
 	t.Logf("--> %+v", log)
 }

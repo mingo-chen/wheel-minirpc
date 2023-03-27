@@ -12,8 +12,7 @@ const (
 	framerHeadLen = 8
 )
 
-type MiniRpcFramer struct {
-}
+type MiniRpcFramer struct{}
 
 // magic(2) + len(2) + 保留(4) + pkg(len)
 func (mini MiniRpcFramer) ReadFrame(conn net.Conn) ([]byte, error) {
